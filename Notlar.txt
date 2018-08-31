@@ -1,0 +1,11 @@
+Third party kütüphaneleri dahil etmek için package.json tanımlarız.
+
+npm init -> package.json oluşturarak npm'e bağlanmamızı sağlar.
+
+npm install lodash --save -> --save komutu indirdiğimiz komutu package.json dosyasına dahil etmesini sağlar.
+
+npm install nodemon -g -> -g komutu nodemon'u makinenizde global bir yardımcı program olarak yükler;
+nodemon app.js diyerek kullanabiliriz.
+
+npm install yargs@4.7.1 --save => yarg komut satırından aldığımız argumanları daha verimli bir şekilde alıp kullanmamızı sağlar.
+Eğer yarg kullanarak ilk elemanaerişmek istersek var command = argv._[0] şeklinde erişebilirz.

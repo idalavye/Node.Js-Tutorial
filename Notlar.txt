@@ -11,3 +11,6 @@ npm install yargs@4.7.1 --save => yarg komut satırından aldığımız argumanl
 Eğer yarg kullanarak ilk elemanaerişmek istersek var command = argv._[0] şeklinde erişebilirz.
 
 npm install hbs@4.0.0 --save => Handlebar.js for express.js, Template view engine
+
+npm i mocha@3.0.0 --save-dev => --save-dev mocha paketini sadece geliştirme ortamında dahil edecek. Proje reel bir sunucuya yüklendiği
+zaman dahil edilmeyecek.

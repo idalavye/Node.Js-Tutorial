@@ -9,3 +9,5 @@ nodemon app.js diyerek kullanabiliriz. nodemon global bir npm packagedir.
 
 npm install yargs@4.7.1 --save => yarg komut satırından aldığımız argumanları daha verimli bir şekilde alıp kullanmamızı sağlar.
 Eğer yarg kullanarak ilk elemanaerişmek istersek var command = argv._[0] şeklinde erişebilirz.
+
+npm install hbs@4.0.0 --save => Handlebar.js for express.js, Template view engine

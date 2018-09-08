@@ -1,2 +1,6 @@
 Testing:
     npm install expect@1.20.2 --save-dev
+    npm i supertest@2.0.0 --save-dev //epress için test yapmak için
+    npm run test => çalıştırmak için
+    https://github.com/mjackson/expect
+    npm install rewire@2.5.2 --save-dev //spy testler yazabilmemiz için

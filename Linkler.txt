@@ -4,3 +4,9 @@ Testing:
     npm run test => çalıştırmak için
     https://github.com/mjackson/expect
     npm install rewire@2.5.2 --save-dev //spy testler yazabilmemiz için
+
+MongoDB:
+    https://robomongo.org/download
+    https://github.com/mongodb/node-mongodb-native
+    npm install mongodb@2.2.5 --save
+    http://mongodb.github.io/node-mongodb-native/3.1/api/index.html

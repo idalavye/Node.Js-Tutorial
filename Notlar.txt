@@ -19,3 +19,9 @@ npm i mocha@3.0.0 --save-dev => --save-dev mocha paketini sadece geliştirme ort
 zaman dahil edilmeyecek.
 
 nodemon --exec "npm test"
+
+MongoDB :   
+    mongod.exe --dbpath /Users/idalavye/mongo-data
+    mongo.exe
+    db.Todos.insert({text:'Create new Node course'})
+    db.Todos.find()    

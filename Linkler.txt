@@ -10,3 +10,6 @@ MongoDB:
     https://github.com/mongodb/node-mongodb-native
     npm install mongodb@2.2.5 --save
     http://mongodb.github.io/node-mongodb-native/3.1/api/index.html
+    https://docs.mongodb.com/manual/reference/operator/update/
+    https://mongoosejs.com/docs/guide.html
+    npm install mongoose@4.5.9 --save

@@ -12,7 +12,7 @@ Eğer yarg kullanarak ilk elemanaerişmek istersek var command = argv._[0] şekl
 
 npm install hbs@4.0.0 --save => Handlebar.js for express.js, Template view engine
 
-git status,git add,git commit
+git status,git add,git commit -m 'message'
 git add . => tüm dosyaları commit eder.
 
 npm i mocha@3.0.0 --save-dev => --save-dev mocha paketini sadece geliştirme ortamında dahil edecek. Proje reel bir sunucuya yüklendiği

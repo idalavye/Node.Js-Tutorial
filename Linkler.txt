@@ -13,3 +13,8 @@ MongoDB:
     https://docs.mongodb.com/manual/reference/operator/update/
     https://mongoosejs.com/docs/guide.html
     npm install mongoose@4.5.9 --save
+
+Mongoose:
+    https://mongoosejs.com/docs/validation.html
+    https://mongoosejs.com/docs/guide.html
+

@@ -25,3 +25,6 @@ MongoDB :
     mongo.exe
     db.Todos.insert({text:'Create new Node course'})
     db.Todos.find()    
+
+npm install express@4.14.0 body-parser@1.15.2 --save
+body-parser : sunucuya json veri göndermek için kullanırız.

@@ -4,6 +4,7 @@ Testing:
     npm run test => çalıştırmak için
     https://github.com/mjackson/expect
     npm install rewire@2.5.2 --save-dev //spy testler yazabilmemiz için
+    npm i expect expect@1.20.2 mocha@3.0.2 nodemon@1.10.2 supertest@2.0.0 --save-dev
 
 MongoDB:
     https://robomongo.org/download
@@ -17,4 +18,7 @@ MongoDB:
 Mongoose:
     https://mongoosejs.com/docs/validation.html
     https://mongoosejs.com/docs/guide.html
+    https://www.npmjs.com/package/body-parser#bodyparserjsonoptions
+
+
 

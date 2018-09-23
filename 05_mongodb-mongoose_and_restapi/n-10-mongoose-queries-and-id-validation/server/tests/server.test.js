@@ -30,7 +30,7 @@ describe('POST /todos', () => {
                 expect(res.body.text).toBe(text);
             })
             .end((err, res) => {
-                if (err) { //Yukarıdaki expectlerde bir hata çıkarsa bu if'in içerisine girecek
+                if (err) { //Yuarıdaki epectlerde bir hata çıkarsa bu if'in içerisine girecek
                     return done(err);
                 }
 

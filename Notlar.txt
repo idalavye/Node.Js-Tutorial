@@ -3,6 +3,7 @@ Third party kütüphaneleri dahil etmek için package.json tanımlarız.
 npm init -> package.json oluşturarak npm'e bağlanmamızı sağlar.
 
 npm install lodash --save -> --save komutu indirdiğimiz komutu package.json dosyasına dahil etmesini sağlar.
+Lodash, diziler, sayılar, nesneler, dizgiler, vb. İle uğraşmaktan kaçınarak JavaScript'i kolaylaştırır.(_.sort() şeklinde kullanılabilir.)
 
 npm install nodemon -g -> -g komutu nodemon'u makinenizde global bir yardımcı program olarak yükler;
 nodemon app.js diyerek kullanabiliriz. nodemon global bir npm packagedir.

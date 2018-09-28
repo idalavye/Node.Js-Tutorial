@@ -19,6 +19,5 @@ Mongoose:
     https://mongoosejs.com/docs/validation.html
     https://mongoosejs.com/docs/guide.html
     https://www.npmjs.com/package/body-parser#bodyparserjsonoptions
-    
-    
-
+    https://mongoosejs.com/docs/validation.html
+    npm install validator@5.6.0 --save //email kontrolü için kullanabiliriz.

@@ -21,3 +21,7 @@ Mongoose:
     https://www.npmjs.com/package/body-parser#bodyparserjsonoptions
     https://mongoosejs.com/docs/validation.html
     npm install validator@5.6.0 --save //email kontrolü için kullanabiliriz.
+
+Security:
+    npm install crypto-js@3.1.6 --save
+    npm install jsonwebtoken@7.1.9 --save

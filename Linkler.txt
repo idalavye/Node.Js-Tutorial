@@ -25,3 +25,4 @@ Mongoose:
 Security:
     npm install crypto-js@3.1.6 --save
     npm install jsonwebtoken@7.1.9 --save
+    npm i bcryptjs@2.3.0 --save // veritabanına şifrelerimizi kaydederken kriptolanmış bir şekilde kaydetmek için kullanırız.

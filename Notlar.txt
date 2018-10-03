@@ -29,3 +29,8 @@ MongoDB :
 
 npm install express@4.14.0 body-parser@1.15.2 --save
 body-parser : sunucuya json veri göndermek için kullanırız.
+
+Heroku'ya environment veriable eklemek istersek heroku config:set NAME=Andrew şeklinde ekliyebiliriz. Görüntülemek için ise heroku config komutunu kullanabiliriz.
+//heroku config:get NAME
+//heroku config:unset NAME //env siler
+//heroku config:set JWT_SECRET=adsfasfadsfadfadfişlln

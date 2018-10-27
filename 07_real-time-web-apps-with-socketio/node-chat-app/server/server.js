@@ -28,11 +28,11 @@ io.on('connection', (socket) => {
     //Odaya girdiğini diğer bağlantılara söylemek için yayın yaparız.
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message, callback) => {
         console.log('createMessge', message);
 
         io.emit('newMessage', generateMessage(message.from, message.text));
-
+        callback('This is from the server');
         // socket.broadcast.emit('newMessage',{ //kendi hariç tüm bağlantılara iletir(broadcast)
         //     from:message.from,
         //     text:message.text,

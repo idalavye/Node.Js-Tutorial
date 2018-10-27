@@ -14,7 +14,7 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-    
+
     console.log('New user connected');
 
     // socket.emit('newMessage', {
@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
         console.log('createMessge', message);
 
         io.emit('newMessage', generateMessage(message.from, message.text));
-        callback('This is from the server');
+        callback();
     });
 
     socket.on('createLocationMessage', (coords) => {

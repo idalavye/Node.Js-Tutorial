@@ -4,6 +4,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 
 const { generateMessage, generateLocationMessage } = require('./utils/message');
+const { isRealString } = require('./utils/validation');
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000
 
@@ -23,18 +24,28 @@ io.on('connection', (socket) => {
     //     createdAt: 123123
     // });
 
-    //Odaya yeni giren her kişi için
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+    socket.on('join', (params, callback) => {
+        if (!isRealString(params.name) || !isRealString(params.room)) {
+            callback('Name and room name are required');
+        }
 
-    //Odaya girdiğini diğer bağlantılara söylemek için yayın yaparız.
-    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
+        socket.join(params.room);
+        //socket.leave('RoomName');
+
+
+        //Odaya yeni giren her kişi için
+        socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+        //Odaya girdiğini diğer bağlantılara söylemek için yayın yaparız.
+        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined`));
+        callback();
+    });
 
     socket.on('createMessage', (message, callback) => {
         console.log('createMessge', message);
 
         io.emit('newMessage', generateMessage(message.from, message.text));
         callback();
-    
+
     });
 
     socket.on('createLocationMessage', (coords) => {

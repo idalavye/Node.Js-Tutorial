@@ -1,0 +1,9 @@
+What is Node.js?
+    We are not working with local file system,opening files, reading files or deleting files with browsers. Because security reassons dont 
+permissions to us. Node.js adds these features to v8 engine so we can suddenly do that. if we install node.js, we can use it to basically 
+use that extended v8 version to run javascript scripts on our computers. it allows you to run javascript on your computer and it adds
+useful functionalities to the javascript engine 
+
+    Nodejs is not limited to running code on a server, nodejs you don't just write the code that is running on your server you also write
+the server yourself,so the code that takes the incoming requests and routes them to your well other code. In PHP, you have extra tools like
+apache or nginx which run the servers which listen to incoming requests and then execute your php code here node.js does both

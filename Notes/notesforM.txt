@@ -7,3 +7,12 @@ useful functionalities to the javascript engine
     Nodejs is not limited to running code on a server, nodejs you don't just write the code that is running on your server you also write
 the server yourself,so the code that takes the incoming requests and routes them to your well other code. In PHP, you have extra tools like
 apache or nginx which run the servers which listen to incoming requests and then execute your php code here node.js does both
+
+    Arrow functionların içerisindeki this keyword'ü çalışma zamanındaki global scopu referance alır. Objenin içerisindeki değişkenleri değil.
+
+    Spread Operator -> ...
+
+    Rest operator -> const toArray = (...args) => { return args; }
+
+Destructuring?
+    it simply allows us to access elements in objects or arrays quickly by their name or position.

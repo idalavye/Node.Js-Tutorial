@@ -16,3 +16,8 @@ apache or nginx which run the servers which listen to incoming requests and then
 
 Destructuring?
     it simply allows us to access elements in objects or arrays quickly by their name or position.
+
+Promise?
+    Promiselar ile daha anlaşılınabilir async kodlar yazabiliriz. 
+    callback keyword'ünü kullanma zorunluluğumuz kalkar.
+    then ve catch methodları ile gelen verileri ayıklayabiliriz.

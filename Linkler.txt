@@ -30,3 +30,6 @@ Security:
 Node.JS Concepts:
     https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
     https://nodejs.org/en/docs/guides/dont-block-the-event-loop/
+
+VsCode:
+    https://code.visualstudio.com/docs/nodejs/nodejs-debugging

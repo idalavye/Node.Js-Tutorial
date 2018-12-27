@@ -8,8 +8,8 @@ const adminData = require('./admin');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  console.log('shop.js', adminData.products);
-  res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+  //render => bu expressjs tarafından sağlanır ve varsayılan şablon motorunu kullanır.
+  res.render('shop');
 });
 
 module.exports = router;

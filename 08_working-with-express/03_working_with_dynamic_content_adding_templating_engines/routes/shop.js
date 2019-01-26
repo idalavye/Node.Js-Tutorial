@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', (req, res, next) => {
   const products = adminData.products;
   //render => bu expressjs tarafından sağlanır ve varsayılan şablon motorunu kullanır.
-  res.render('shop', { prods: products, docTitle: 'Shop' });
+  res.render('shop', { prods: products, docTitle: 'Shop' , path:'/shop'});
 });
 
 module.exports = router;

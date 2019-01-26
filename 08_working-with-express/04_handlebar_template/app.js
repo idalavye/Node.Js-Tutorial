@@ -6,15 +6,8 @@ const expressHbs = require('express-handlebars');
 
 const app = express();
 
-/**
- * app.set(); //express projemizde global bir değişken oluşturur. Bunu kullanarak 
- * özel tanımlamalarda yapabiliriz.
- */
-
-/**
- * Projemize bir template engine atadık. Ve template'leri nerede bulabileceğini gösterdik
- */
-app.set('view engine', 'pug');
+app.engine('hbs', expressHbs())
+app.set('view engine', 'hbs');
 app.set('views', 'views');
 
 const adminData = require('./routes/admin');
@@ -27,8 +20,7 @@ app.use('/admin', adminData.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-    res.status(404).render('404');
-    // res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+    res.status(404).render('404', { pageNotFound: 'Page Not Found' });
 });
 
 app.listen(3000);

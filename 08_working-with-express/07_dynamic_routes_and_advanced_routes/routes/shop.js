@@ -10,7 +10,7 @@ router.get('/', shopController.getIndex);
 
 router.get('/products', shopController.getProducts);
 
-router.get('/products/:productId',shopController.getProduct);
+router.get('/products/:productId', shopController.getProduct);
 
 /**
  * Aşarıdaki istek hiçbir zaman tetiklenmeyecektir. Çünkü yukarıdaki istek dynamic 
@@ -22,6 +22,8 @@ router.get('/products/:productId',shopController.getProduct);
  */
 
 router.get('/cart', shopController.getCart);
+
+router.post('/cart', shopController.postCart);
 
 router.get('/orders', shopController.getOrders);
 

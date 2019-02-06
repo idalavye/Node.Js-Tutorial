@@ -13,7 +13,12 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  Product.create({
+  /**
+   * createProduct methodu user ve product arasında ilişki kurduğumuz için 
+   * sequelize tarafından bize sunulan bir fonksiyondur. product tablosundaki 
+   * userId column u otomatik doldurur.
+   */
+  req.user.createProduct({
     title: title,
     price: price,
     imageUrl: imageUrl,

@@ -39,17 +39,22 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findById(prodId).then(product => {
-    if (!product) {
-      return res.redirect('/');
-    }
-    res.render('admin/edit-product', {
-      pageTitle: 'Edit Product',
-      path: '/admin/edit-product',
-      editing: editMode,
-      product: product
-    });
-  }).catch(err => console.log(err))
+  /**
+   * getProducts ilişki olduğu için sequelize ile gelmiştir.
+   */
+  req.user.getProducts({ where: { id: prodId } })
+    .then(products => {
+      const product = products[0];
+      if (!product) {
+        return res.redirect('/');
+      }
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
+        editing: editMode,
+        product: product
+      });
+    }).catch(err => console.log(err))
 };
 
 exports.postEditProducts = (req, res, next) => {
@@ -58,6 +63,7 @@ exports.postEditProducts = (req, res, next) => {
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
+
 
   Product.findById(prodId)
     .then(product => {
@@ -89,7 +95,7 @@ exports.postDeleteProduct = (req, res, next) => {
 }
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  req.user.getProducts()
     .then(products => {
       res.render('admin/products', {
         prods: products,

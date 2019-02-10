@@ -17,6 +17,19 @@ class Product {
         console.log(err);
       });
   }
+
+  static fetchAll() {
+    const db = getDb();
+    //find metodu promise döndürmez. Bir cursor döndürür.
+    return db.collection('products')
+      .find()
+      .toArray()
+      .then((products) => {
+        return products;
+      }).catch((err) => {
+        console.log(err);
+      });;
+  }
 }
 
 module.exports = Product;

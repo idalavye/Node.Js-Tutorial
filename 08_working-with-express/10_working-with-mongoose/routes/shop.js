@@ -12,16 +12,7 @@ router.get('/products', shopController.getProducts);
 
 router.get('/products/:productId', shopController.getProduct);
 
-// // /**
-// //  * Aşarıdaki istek hiçbir zaman tetiklenmeyecektir. Çünkü yukarıdaki istek dynamic 
-// //  * olarak path aldığı için ../delete isteğini de karşılayacaktır. Eğer bunu kullanmak 
-// //  * istiyorsak aşarıdaki isteği yukarı taşımalıyız.
-// //  * 
-// //  * 
-// //     router.get('/products/delete');
-// //  */
-
-// router.get('/cart', shopController.getCart);
+router.get('/cart', shopController.getCart);
 
 router.post('/cart', shopController.postCart);
 

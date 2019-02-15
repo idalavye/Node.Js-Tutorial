@@ -101,6 +101,9 @@ exports.postOrder = (req, res, next) => {
       order.save();
     })
     .then(result => {
+      return req.user.clearData();
+    })
+    .then(() => {
       res.redirect('/orders');
     })
     .catch(err => console.log(err))

@@ -4,11 +4,18 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
 
+const MONGODB_URI = 'mongodb://localhost:27017/shop';
+
 const app = express();
+const store = new MongoDBStore({
+  uri: MONGODB_URI,
+  collection: 'sessions'
+});
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -23,7 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
  * resave:false = > Bu, oturumun, yapılan her istek için kaydedilmeyeceği anlamına gelir;
  * saveunitialized: false => kaydedilmesi gerekmeyen bir istek için hiçbir oturumun kaydedilmediğinden emin olun.
  */
-app.use(session({ secret: "secret", resave: false, saveUninitialized: false }));
+app.use(session({ secret: "secret", resave: false, saveUninitialized: false, store: store }));
 
 app.use((req, res, next) => {
   User.findById("5c666bfe31a0e329d827fc89")
@@ -41,7 +48,7 @@ app.use(authRoutes);
 app.use(errorController.get404);
 
 mongoose
-  .connect("mongodb://localhost:27017/shop")
+  .connect(MONGODB_URI)
   .then(result => {
     User.findOne().then(user => {
       if (!user) {

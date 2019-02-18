@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -18,6 +19,11 @@ const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+/**
+ * resave:false = > Bu, oturumun, yapılan her istek için kaydedilmeyeceği anlamına gelir;
+ * saveunitialized: false => kaydedilmesi gerekmeyen bir istek için hiçbir oturumun kaydedilmediğinden emin olun.
+ */
+app.use(session({ secret: 'secret', resave: false,saveUninitialized:false }))
 
 app.use((req, res, next) => {
   User.findById('5c666bfe31a0e329d827fc89')

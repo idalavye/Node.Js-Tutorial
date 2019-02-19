@@ -18,13 +18,30 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  User.findById('5c68538130205e61c843b6ab').then(user => {
-    req.session.user = user;
-    req.session.isLoggedIn = true;
-    req.session.save().then(err => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  User.findOne({ email: email }).then(user => {
+    if (!user) {
+      return res.redirect('/login');
+    }
+    bcrypt.compare(password, user.password).then(doMatch => {
+      if (doMatch) {
+        req.session.user = user;
+        req.session.isLoggedIn = true;
+        return req.session.save(err => {
+          if (err)
+            console.log(err);
+          res.redirect('/');
+        })
+      }
+      res.redirect('/login');
+    }).catch(err => {
+      //password not match
       console.log(err);
-      res.redirect('/');
+      res.redirect('/login')
     })
+
   }).catch(err => console.log(err))
 }
 
@@ -38,18 +55,19 @@ exports.postSignup = (req, res, next) => {
       if (userDoc) {
         return res.redirect('/signup');
       }
-      return bcrypt.hash(password, 12);
-    })
-    .then(hashedPassword => {
-      const user = new User({
-        email: email,
-        password: hashedPassword,
-        cart: { items: [] }
-      });
-      return user.save();
-    })
-    .then(result => {
-      res.redirect('/login');
+      return bcrypt
+        .hash(password, 12)
+        .then(hashedPassword => {
+          const user = new User({
+            email: email,
+            password: hashedPassword,
+            cart: { items: [] }
+          });
+          return user.save();
+        })
+        .then(result => {
+          res.redirect('/login');
+        });
     })
     .catch(err => {
       console.log(err);
@@ -58,7 +76,8 @@ exports.postSignup = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {
-    console.log(err);
+    if (err)
+      console.log(err);
     res.redirect('/');
   });
 };

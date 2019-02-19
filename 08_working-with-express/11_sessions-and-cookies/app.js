@@ -31,16 +31,6 @@ app.use(express.static(path.join(__dirname, "public")));
  * saveunitialized: false => kaydedilmesi gerekmeyen bir istek için hiçbir oturumun kaydedilmediğinden emin olun.
  */
 app.use(session({ secret: "secret", resave: false, saveUninitialized: false, store: store }));
-
-app.use((req, res, next) => {
-  User.findById("5c666bfe31a0e329d827fc89")
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.log(err));
-});
-
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);

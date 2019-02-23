@@ -10,7 +10,17 @@ router.get('/login', authController.getLogin);
 
 router.get('/signup', authController.getSignup);
 
-router.post('/login', authController.postLogin);
+router.post('/login',
+    check('email')
+        .isEmail()
+        .withMessage('Please enter a valid email'),
+    body(
+        'password',
+        'Please enter a password with only numbers and text and at least 5 characters.'
+    )
+        .isLength({ min: 5 })
+        .isAlphanumeric(),
+    authController.postLogin);
 
 router.post('/signup',
     check('email')
@@ -29,7 +39,7 @@ router.post('/signup',
                         return Promise.reject('E-Mail exists already, please pick a different one')
                     }
                 })
-                // .catch(err => console.log(err)) //kendi catch metodumuzu yazarsak express validator hatayı yakalayamaz
+            // .catch(err => console.log(err)) //kendi catch metodumuzu yazarsak express validator hatayı yakalayamaz
         }),
     body(
         'password',

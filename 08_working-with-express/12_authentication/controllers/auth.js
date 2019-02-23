@@ -42,13 +42,27 @@ exports.getSignup = (req, res, next) => {
     path: '/signup',
     pageTitle: 'Signup',
     isAuthenticated: false,
-    errorMessage: message
+    errorMessage: message,
+    oldInput: {
+      email: "",
+      password: "",
+      confirmPassword: ""
+    }
   });
 };
 
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.render('auth/login', {
+      path: '/login',
+      pageTitle: 'Login',
+      errorMessage: errors.array()[0].msg
+    });
+  }
 
   User.findOne({ email: email }).then(user => {
     if (!user) {
@@ -86,7 +100,8 @@ exports.postSignup = (req, res, next) => {
     return res.status(422).render('auth/signup', {
       path: '/signup',
       pageTitle: 'Signup',
-      errorMessage: errors.array()[0].msg
+      errorMessage: errors.array()[0].msg,
+      oldInput: { email: email, password: password, confirmPassword: req.body.confirmPassword }
     });
   }
 
@@ -112,6 +127,7 @@ exports.postSignup = (req, res, next) => {
     .catch(err => {
       console.log(err);
     })
+
 };
 
 exports.postLogout = (req, res, next) => {

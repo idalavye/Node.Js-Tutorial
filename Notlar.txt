@@ -34,3 +34,9 @@ Heroku'ya environment veriable eklemek istersek heroku config:set NAME=Andrew ş
 //heroku config:get NAME
 //heroku config:unset NAME //env siler
 //heroku config:set JWT_SECRET=adsfasfadsfadfadfişlln
+
+Errors and Http Status Codes:
+    2xx -> Success
+    3xx -> Redirect
+    4xx -> Client Side Errors
+    5xx -> Server Side Errors

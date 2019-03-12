@@ -20,6 +20,21 @@ const store = new MongoDBStore({
   collection: 'sessions'
 });
 const csrfProtection = csrf();
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    /**
+     * Birinci parametre hata olup olmadığı,
+     * ikinci parametre ise resmin nereye kaydedileceğini gösterir.
+     */
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    /**
+     * Aynı isimde gelen dosyaların çakışmaması için file.filename'i başa ekledik Bu multer tarafından otomatik oluşturulur
+     */
+    cb(null, new Date().toISOString() + '-' + file.originalname);
+  }
+});
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -30,7 +45,7 @@ const authRoutes = require('./routes/auth');
 
 //urlencoded sadece text türünde veriler alır. Resim ise binary türünde bir dosyadır. Bu yüzden bunun için ayrı bir kütüphane kullanırız. (multer)
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ dest: 'images' }).single('image'));
+app.use(multer({ storage: fileStorage }).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({

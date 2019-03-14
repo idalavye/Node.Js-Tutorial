@@ -36,6 +36,17 @@ const fileStorage = multer.diskStorage({
   }
 });
 
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+    /**
+     * Eğer ikinci parametre true ise dosyayı kabul ettik demektir.
+     */
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+}
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -45,7 +56,7 @@ const authRoutes = require('./routes/auth');
 
 //urlencoded sadece text türünde veriler alır. Resim ise binary türünde bir dosyadır. Bu yüzden bunun için ayrı bir kütüphane kullanırız. (multer)
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ storage: fileStorage }).single('image'));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
@@ -84,6 +95,9 @@ app.use((req, res, next) => {
   }
   User.findById(req.session.user._id)
     .then(user => {
+      if (!user) {
+        return next();
+      }
       // throw new Error('asdf');
       req.user = user;
       next();
@@ -109,6 +123,7 @@ app.use(errorController.get404);
 app.use((error, req, res, next) => {
   // res.status(error.httpStatusCode).render(....);
   // res.redirect('/500');
+  
   res.status(500).render('500', {
     pageTitle: 'Error',
     path: '/500',
@@ -119,7 +134,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
-    app.listen(3000);
+    app.listen(3003);
   })
   .catch(err => {
     console.log(err);

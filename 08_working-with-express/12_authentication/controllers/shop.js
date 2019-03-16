@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const PDFDocument = require('pdfkit');
+
 const Product = require('../models/product');
 const Order = require('../models/order');
 
@@ -161,14 +163,27 @@ exports.getInvoice = (req, res, next) => {
     /**
      * Bu order şu anki giriş yapan kişiye ait ise faturasını indirebilir.
      */
-    if (order.user.userId.toString() === req.user._id.toString()) {
+    console.log(order.user.userId.toString());
+    console.log(req.user._id.toString());
+    
+    
+    if (order.user.userId.toString() !== req.user._id.toString()) {
       return next(new Error('Unauthorize'));
     }
 
     const invoiceName = 'invoice-' + orderId + '.pdf';
     const invoicePath = path.join('data', 'invoices', invoiceName);
 
-    // => PRELOADING DATA (Tamamen yüklenmeden browsera göndermez)
+    const pdfDoc = new PDFDocument();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline: filename"' + invoiceName + '"');
+    pdfDoc.pipe(fs.createWriteStream(invoicePath)); // Server'da bir tane pdf dosyası oluşturuyoruz.
+    pdfDoc.pipe(res); //Daha sonra client e sunuyoruz.
+    pdfDoc.text('Hello World');
+    pdfDoc.end();
+
+    // => PRELOADING DATA (Tamamen okunmasını bekler sonra cliente gönderir)
+
     // fs.readFile(invoicePath, (err, data) => {
     //   if (err) {
     //     return next(err);
@@ -186,13 +201,17 @@ exports.getInvoice = (req, res, next) => {
     //   res.send(data);
     // });
 
+
     // => STREAMING DATA (Birkerede okuyup göndermek yerine parça parça okuyarak gönderir. Serverde her se
     //     seferinde sadece bir parça(chunk) okunur. Bu sayade sunucudaki memory boşa kullanılmamış olur.)
-    const file = fs.createReadStream(invoicePath);
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline: filename"' + invoiceName + '"');
-    file.path(res);
 
-  }).catch(err => next(err));
+    // const file = fs.createReadStream(invoicePath);
+    // res.setHeader('Content-Type', 'application/pdf');
+    // res.setHeader('Content-Disposition', 'inline: filename"' + invoiceName + '"');
+    // file.path(res);
 
+  }).catch(err => {
+    console.log(err);
+    return next(err)
+  });
 }

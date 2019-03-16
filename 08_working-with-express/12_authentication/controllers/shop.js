@@ -161,6 +161,15 @@ exports.getInvoice = (req, res, next) => {
        return next(err);
     }
 
+    /**
+     * Browser bunu gördüğü zaman pdf i tarayıcı üzerinde açacak
+     */
+    res.setHeader('Content-Type','application/pdf'); 
+    /**
+     * Eğer inline yerine attachment yazarsak browser pdf i açmak yerine indirme pencersini 
+     * açar. Bu şekide headerlar ile browserın davranışlaını kontrol edebiliriz.
+     */
+    res.setHeader('Content-Disposition','inline: filename"' + invoiceName +'"');
     res.send(data); 
   });
 }

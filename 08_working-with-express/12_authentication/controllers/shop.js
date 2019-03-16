@@ -168,22 +168,31 @@ exports.getInvoice = (req, res, next) => {
     const invoiceName = 'invoice-' + orderId + '.pdf';
     const invoicePath = path.join('data', 'invoices', invoiceName);
 
-    fs.readFile(invoicePath, (err, data) => {
-      if (err) {
-        return next(err);
-      }
+    // => PRELOADING DATA (Tamamen yüklenmeden browsera göndermez)
+    // fs.readFile(invoicePath, (err, data) => {
+    //   if (err) {
+    //     return next(err);
+    //   }
 
-      /**
-       * Browser bunu gördüğü zaman pdf i tarayıcı üzerinde açacak
-       */
-      res.setHeader('Content-Type', 'application/pdf');
-      /**
-       * Eğer inline yerine attachment yazarsak browser pdf i açmak yerine indirme pencersini 
-       * açar. Bu şekide headerlar ile browserın davranışlaını kontrol edebiliriz.
-       */
-      res.setHeader('Content-Disposition', 'inline: filename"' + invoiceName + '"');
-      res.send(data);
-    });
+    //   /**
+    //    * Browser bunu gördüğü zaman pdf i tarayıcı üzerinde açacak
+    //    */
+    //   res.setHeader('Content-Type', 'application/pdf');
+    //   /**
+    //    * Eğer inline yerine attachment yazarsak browser pdf i açmak yerine indirme pencersini 
+    //    * açar. Bu şekide headerlar ile browserın davranışlaını kontrol edebiliriz.
+    //    */
+    //   res.setHeader('Content-Disposition', 'inline: filename"' + invoiceName + '"');
+    //   res.send(data);
+    // });
+
+    // => STREAMING DATA (Birkerede okuyup göndermek yerine parça parça okuyarak gönderir. Serverde her se
+    //     seferinde sadece bir parça(chunk) okunur. Bu sayade sunucudaki memory boşa kullanılmamış olur.)
+    const file = fs.createReadStream(invoicePath);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline: filename"' + invoiceName + '"');
+    file.path(res);
+
   }).catch(err => next(err));
 
 }

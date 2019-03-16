@@ -57,7 +57,16 @@ const authRoutes = require('./routes/auth');
 //urlencoded sadece text türünde veriler alır. Resim ise binary türünde bir dosyadır. Bu yüzden bunun için ayrı bir kütüphane kullanırız. (multer)
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+
+/**
+ * Resimler,css ve javascript gibi dosyaları otomatik sunmak için express static methodu kullanılır.
+ */
 app.use(express.static(path.join(__dirname, 'public')));
+/**
+ * Express ile bu şekilde resimlerimizi sunduğumuz zaman başında images prefixi olmadan çağırabiliriz.
+ * Eğer prefix olarak images olarak kullanmak istiyorsak birinci parametrede vermeliyiz.
+ */
+app.use('/images',express.static(path.join(__dirname, 'images')));
 app.use(
   session({
     secret: 'my secret',
@@ -134,7 +143,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
-    app.listen(3003);
+    app.listen(3000);
   })
   .catch(err => {
     console.log(err);

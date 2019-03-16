@@ -32,7 +32,6 @@ exports.postAddProduct = (req, res, next) => {
       product: {
         title: title,
         price: price,
-        imageUrl: imageUrl,
         description: description
       },
       errorMessage: 'Attached file is not an image',

@@ -163,10 +163,7 @@ exports.getInvoice = (req, res, next) => {
     /**
      * Bu order şu anki giriş yapan kişiye ait ise faturasını indirebilir.
      */
-    console.log(order.user.userId.toString());
-    console.log(req.user._id.toString());
-    
-    
+
     if (order.user.userId.toString() !== req.user._id.toString()) {
       return next(new Error('Unauthorize'));
     }
@@ -179,7 +176,19 @@ exports.getInvoice = (req, res, next) => {
     res.setHeader('Content-Disposition', 'inline: filename"' + invoiceName + '"');
     pdfDoc.pipe(fs.createWriteStream(invoicePath)); // Server'da bir tane pdf dosyası oluşturuyoruz.
     pdfDoc.pipe(res); //Daha sonra client e sunuyoruz.
-    pdfDoc.text('Hello World');
+
+    /**
+     * Pdf içeriği....
+     */
+    pdfDoc.fontSize(26).text('Invoice', { underline: true });
+    pdfDoc.text('----------------------------------------');
+    let totalPrice = 0;
+    order.products.forEach(prod => {
+      totalPrice += prod.quantity * prod.product.price;
+      pdfDoc.fontSize(14).text(prod.product.title + ' - ' + prod.quantity + ' x ' + '$' + prod.product.price);
+    });
+    pdfDoc.fontSize(20).text('-----');
+    pdfDoc.text('Total Price:  $' + totalPrice);
     pdfDoc.end();
 
     // => PRELOADING DATA (Tamamen okunmasını bekler sonra cliente gönderir)
@@ -211,7 +220,6 @@ exports.getInvoice = (req, res, next) => {
     // file.path(res);
 
   }).catch(err => {
-    console.log(err);
     return next(err)
   });
 }

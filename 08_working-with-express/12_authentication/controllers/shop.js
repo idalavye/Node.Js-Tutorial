@@ -153,23 +153,37 @@ exports.getOrders = (req, res, next) => {
 
 exports.getInvoice = (req, res, next) => {
   const orderId = req.params.orderId;
-  const invoiceName = 'invoice-' + orderId + '.pdf';
-  const invoicePath = path.join('data','invoices',invoiceName);
-
-  fs.readFile(invoicePath,(err,data) => {
-    if(err){
-       return next(err);
+  Order.findById(orderId).then(order => {
+    if (!order) {
+      return next(new Error('No order found.'));
     }
 
     /**
-     * Browser bunu gördüğü zaman pdf i tarayıcı üzerinde açacak
+     * Bu order şu anki giriş yapan kişiye ait ise faturasını indirebilir.
      */
-    res.setHeader('Content-Type','application/pdf'); 
-    /**
-     * Eğer inline yerine attachment yazarsak browser pdf i açmak yerine indirme pencersini 
-     * açar. Bu şekide headerlar ile browserın davranışlaını kontrol edebiliriz.
-     */
-    res.setHeader('Content-Disposition','inline: filename"' + invoiceName +'"');
-    res.send(data); 
-  });
+    if (order.user.userId.toString() === req.user._id.toString()) {
+      return next(new Error('Unauthorize'));
+    }
+
+    const invoiceName = 'invoice-' + orderId + '.pdf';
+    const invoicePath = path.join('data', 'invoices', invoiceName);
+
+    fs.readFile(invoicePath, (err, data) => {
+      if (err) {
+        return next(err);
+      }
+
+      /**
+       * Browser bunu gördüğü zaman pdf i tarayıcı üzerinde açacak
+       */
+      res.setHeader('Content-Type', 'application/pdf');
+      /**
+       * Eğer inline yerine attachment yazarsak browser pdf i açmak yerine indirme pencersini 
+       * açar. Bu şekide headerlar ile browserın davranışlaını kontrol edebiliriz.
+       */
+      res.setHeader('Content-Disposition', 'inline: filename"' + invoiceName + '"');
+      res.send(data);
+    });
+  }).catch(err => next(err));
+
 }

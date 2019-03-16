@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const Product = require('../models/product');
 const Order = require('../models/order');
 
@@ -13,10 +16,10 @@ exports.getProducts = (req, res, next) => {
       });
     })
     .catch(err => {
-      const error = new Error(err); 
+      const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
-    }); 
+    });
 };
 
 exports.getProduct = (req, res, next) => {
@@ -31,10 +34,10 @@ exports.getProduct = (req, res, next) => {
       });
     })
     .catch(err => {
-      const error = new Error(err); 
+      const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
-    }); 
+    });
 };
 
 exports.getIndex = (req, res, next) => {
@@ -45,14 +48,14 @@ exports.getIndex = (req, res, next) => {
         pageTitle: 'Shop',
         path: '/',
         isAuthenticated: req.session.isLoggedIn,
-        csrfToken:req.csrfToken()
+        csrfToken: req.csrfToken()
       });
     })
     .catch(err => {
-      const error = new Error(err); 
+      const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
-    }); 
+    });
 };
 
 exports.getCart = (req, res, next) => {
@@ -69,10 +72,10 @@ exports.getCart = (req, res, next) => {
       });
     })
     .catch(err => {
-      const error = new Error(err); 
+      const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
-    }); 
+    });
 };
 
 exports.postCart = (req, res, next) => {
@@ -95,10 +98,10 @@ exports.postCartDeleteProduct = (req, res, next) => {
       res.redirect('/cart');
     })
     .catch(err => {
-      const error = new Error(err); 
+      const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
-    }); 
+    });
 };
 
 exports.postOrder = (req, res, next) => {
@@ -125,10 +128,10 @@ exports.postOrder = (req, res, next) => {
       res.redirect('/orders');
     })
     .catch(err => {
-      const error = new Error(err); 
+      const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
-    }); 
+    });
 };
 
 exports.getOrders = (req, res, next) => {
@@ -142,8 +145,22 @@ exports.getOrders = (req, res, next) => {
       });
     })
     .catch(err => {
-      const error = new Error(err); 
+      const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
-    }); 
+    });
 };
+
+exports.getInvoice = (req, res, next) => {
+  const orderId = req.params.orderId;
+  const invoiceName = 'invoice-' + orderId + '.pdf';
+  const invoicePath = path.join('data','invoices',invoiceName);
+
+  fs.readFile(invoicePath,(err,data) => {
+    if(err){
+       return next(err);
+    }
+
+    res.send(data); 
+  });
+}

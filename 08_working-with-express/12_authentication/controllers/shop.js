@@ -189,6 +189,9 @@ exports.getInvoice = (req, res, next) => {
     });
     pdfDoc.fontSize(20).text('-----');
     pdfDoc.text('Total Price:  $' + totalPrice);
+    /**
+     * Pdf içeriği...
+     */
     pdfDoc.end();
 
     // => PRELOADING DATA (Tamamen okunmasını bekler sonra cliente gönderir)

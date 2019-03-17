@@ -9,6 +9,8 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
 
+const shopController = require('./controllers/shop');
+const isAuth = require('./middleware/is-auth');
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
@@ -75,7 +77,6 @@ app.use(
     store: store
   })
 );
-app.use(csrfProtection);
 app.use(flash());
 
 app.use((req, res, next) => {
@@ -83,7 +84,6 @@ app.use((req, res, next) => {
    * Aşarıdakiler artık tüm responlarımıza eklenecek. Herbir render metoduna tekrar tekrar eklemiycez
    */
   res.locals.isAuthenticated = req.session.isLoggedIn;
-  res.locals.csrfToken = req.csrfToken();
   next();
 });
 
@@ -116,6 +116,21 @@ app.use((req, res, next) => {
       // throw new Error(err);
       next(new Error(err));
     });
+});
+
+/**
+ * csrf protectiondan etkilenmemesi için burada kullandık.
+ */
+app.post('/create-order', isAuth, shopController.postOrder);
+
+app.use(csrfProtection);
+
+app.use((req, res, next) => {
+  /**
+   * Aşarıdakiler artık tüm responlarımıza eklenecek. Herbir render metoduna tekrar tekrar eklemiycez
+   */
+  res.locals.csrfToken = req.csrfToken();
+  next();
 });
 
 app.use('/admin', adminRoutes);

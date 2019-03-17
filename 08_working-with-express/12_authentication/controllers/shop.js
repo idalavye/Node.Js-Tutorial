@@ -6,7 +6,7 @@ const PDFDocument = require('pdfkit');
 const Product = require('../models/product');
 const Order = require('../models/order');
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 1;
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -45,24 +45,37 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  const page = req.query.page;
+  /**
+   * query page string olarak geldği için önce bir sayıya çevirmek için başına 
+   * artı ekledik. Eğer gönderilen parametre bir sayı değil ise bu undefined olacak 
+   * ve yanındaki 1'i page değişkenine atıyacak.
+   */
+  const page = +req.query.page || 1;
+  let totalItems;
 
-  Product.find()
-    /**
-     * Eğer sayfa ikideysem ilk iki item atlanacak. 
-     */
-    .skip((page - 1) * ITEMS_PER_PAGE)
-    /**
-     * limit ile en fazla ne kadar product getireceğimizi belirtiyoruz.
-     */
-    .limit(ITEMS_PER_PAGE)
+  Product.find().count().then(numProducts => {
+    totalItems = numProducts;
+    return Product.find()
+      /**
+       * Eğer sayfa 2 de isem ilk iki item atlanacak. 
+       */
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      /**
+       * limit ile en fazla ne kadar product getireceğimizi belirtiyoruz.
+       */
+      .limit(ITEMS_PER_PAGE);
+  })
     .then(products => {
       res.render('shop/index', {
         prods: products,
         pageTitle: 'Shop',
         path: '/',
-        isAuthenticated: req.session.isLoggedIn,
-        csrfToken: req.csrfToken()
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPrevPage: page > 1,
+        nextPage: page + 1,
+        previusPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
       });
     })
     .catch(err => {

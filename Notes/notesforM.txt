@@ -21,3 +21,6 @@ Promise?
     Promiselar ile daha anlaşılınabilir async kodlar yazabiliriz. 
     callback keyword'ünü kullanma zorunluluğumuz kalkar.
     then ve catch methodları ile gelen verileri ayıklayabiliriz.
+
+Endpoints: 
+    Http method(POST,GET,DELETE) + Path(/products)

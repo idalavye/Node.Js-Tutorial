@@ -24,3 +24,6 @@ Promise?
 
 Endpoints: 
     Http method(POST,GET,DELETE) + Path(/products)
+
+CSRF:
+CORS: Cross Origin Resource Sharing

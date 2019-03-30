@@ -1,7 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
-const feedRoutes = require('./routes/feed');
+const feedRoutes = require("./routes/feed");
 
 const app = express();
 /**
@@ -12,22 +13,26 @@ const app = express();
 /**
  * application/json
  * Gelen veriler artık json formatında dönüştürülecek.
- * smp: const content = req.body.content; 
+ * smp: const content = req.body.content;
  * Yukarıdaki gibi body tagıyla yakalayabilecez.
  */
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-    /**
-     * (*) ile tüm clientlere erişim izni veriyoruz. Buraya bir tane client'de verebilirdik.
-     * (,) kullanarak ta birden fazla client belirtebilirdik.
-     */
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
+  /**
+   * (*) ile tüm clientlere erişim izni veriyoruz. Buraya bir tane client'de verebilirdik.
+   * (,) kullanarak ta birden fazla client belirtebilirdik.
+   */
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
 });
 
-app.use('/feed', feedRoutes);
-
-app.listen(8080);
+app.use("/feed", feedRoutes);
+mongoose
+  .connect("mongodb://localhost:27017/chat")
+  .then(result => {
+    app.listen(8080);
+  })
+  .catch(err => console.log(err));

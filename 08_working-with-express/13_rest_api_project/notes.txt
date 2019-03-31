@@ -1,0 +1,3 @@
+JWT:
+    Client asla bir web token oluşturamaz veya düzenleyemez. Bu token sadece 
+    backend de oluşturulmalı.

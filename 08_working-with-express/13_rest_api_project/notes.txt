@@ -1,3 +1,5 @@
 JWT:
-    Client asla bir web token oluşturamaz veya düzenleyemez. Bu token sadece 
+     Client asla bir web token oluşturamaz veya düzenleyemez. Bu token sadece 
     backend de oluşturulmalı.
+     Secret key sadece sunucu tarafında bilinir ve bu yüzden client tarafında 
+    fake bir token oluşturlamaz

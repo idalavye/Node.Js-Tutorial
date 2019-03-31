@@ -105,7 +105,14 @@ class Feed extends Component {
     this.setState({
       editLoading: true
     });
-    // Set up data (with image!)
+    /**
+     * FormData browserlarda gömülü olarak bulunur. Servera sadece json data değil resim de göndermek istediğimiz için
+     * bu yöntemi kullanıyoruz.
+     */
+    const formData = new FormData();
+    formData.append("title", postData.title);
+    formData.append("content", postData.content);
+    formData.append("image", postData.image);
     let url = "http://localhost:8080/feed/post";
     let method = "POST";
     if (this.state.editPost) {
@@ -114,10 +121,15 @@ class Feed extends Component {
 
     fetch(url, {
       method: method,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ title: postData.title, content: postData.content })
+      // headers: {
+      //   "Content-Type": "application/json"
+      // },
+      // body: JSON.stringify({ title: postData.title, content: postData.content })
+
+      /**
+       * FormData otomatik olarak type ları ayarlayacak.
+       */
+      body: formData
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {

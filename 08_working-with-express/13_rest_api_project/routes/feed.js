@@ -32,7 +32,7 @@ router.put(
       .trim()
       .isLength({ min: 5 })
   ],
-  feedController.putPost
+  feedController.updatePost
 );
 
 router.delete("/post/:postId", isAuth, feedController.deletePost);

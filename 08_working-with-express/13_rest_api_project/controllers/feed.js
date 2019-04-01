@@ -5,28 +5,25 @@ const { validationResult } = require("express-validator/check");
 
 const Post = require("../models/post");
 const User = require("../models/user");
-
-exports.getPosts = (req, res, next) => {
+/**
+ * async arka planda tine then catch mekanızmasını kullanır.
+ */
+exports.getPosts = async (req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = 2;
-  let totalItems;
-
-  Post.find()
-    .countDocuments()
-    .then(count => {
-      totalItems = count;
-      return Post.find()
-        .skip((currentPage - 1) * perPage)
-        .limit(perPage);
-    })
-    .then(posts => {
-      res.status(200).json({
-        message: "Fetched posts successfully",
-        posts: posts,
-        totalItems: totalItems
-      });
-    })
-    .catch(err => next(err));
+  try {
+    const totalItems = await Post.find().countDocuments();
+    const posts = await Post.find()
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
+    res.status(200).json({
+      message: "Fetched posts successfully",
+      posts: posts,
+      totalItems: totalItems
+    });
+  } catch (err) {
+    next(err);
+  }
 
   /**
    * json methodu express tarafından sunulmakta

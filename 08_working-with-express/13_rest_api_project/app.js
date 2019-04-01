@@ -75,6 +75,13 @@ app.use((error, req, res, next) => {
 mongoose
   .connect("mongodb://localhost:27017/chat")
   .then(result => {
-    app.listen(8080);
+    const server = app.listen(8080);
+    /**
+     * Websocket http server üzerine kuruyoruz.
+     */
+    const io = require("socket.io")(server);
+    io.on("connection", socket => {
+      console.log('Client connect')
+    });
   })
   .catch(err => console.log(err));

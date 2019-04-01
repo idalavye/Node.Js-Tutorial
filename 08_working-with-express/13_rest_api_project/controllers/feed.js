@@ -15,6 +15,8 @@ exports.getPosts = async (req, res, next) => {
   try {
     const totalItems = await Post.find().countDocuments();
     const posts = await Post.find()
+      .populate("creator")
+      .sort({ createdAt: -1 })
       .skip((currentPage - 1) * perPage)
       .limit(perPage);
     res.status(200).json({
@@ -87,7 +89,27 @@ exports.postPost = (req, res, next) => {
        * Emit tüm bağli kullanıcılara bir mesaj gönderecektir.
        * broadcast kendisi hariç tüm kullanıcılara gönderir.
        */
-      io.getIO().emit("posts", { action: "create", post: post });
+      /**
+       * _doc ile post içerisindeki tüm proplar getirilir. daha sonrasında bu proplara ek olarak creator ekledik;
+       */
+
+      /**
+        * post._doc log çıktısı
+          { 
+            _id: 5ca27f5f52a29517a272fa77,
+            title: 'asdfasdfasdf',
+            content: 'afasdfasdfasdfadsf',
+            imageUrl: 'images/2019-04-01T21:15:11.247Z-book.jpg',
+            creator: 5ca25b08166b0a742b3e6d09,
+            createdAt: 2019-04-01T21:15:11.266Z,
+            updatedAt: 2019-04-01T21:15:11.266Z,
+            __v: 0 
+          }
+        */
+      io.getIO().emit("posts", {
+        action: "create",
+        post: { ...post._doc, creator: { _id: req.userId, name: creator.name } }
+      });
       //Create post in db
       res.status(201).json({
         message: "Post created successfuly",
@@ -145,13 +167,14 @@ exports.updatePost = (req, res, next) => {
   }
 
   Post.findById(postId)
+    .populate("creator")
     .then(post => {
       if (!post) {
         const error = new Error("Could not find post.");
         error.statusCode = 404;
         throw error;
       }
-      if (post.creator.toString() !== req.userId) {
+      if (post.creator._id.toString() !== req.userId) {
         const error = new Error("Not authorized");
         error.statusCode = 403;
         throw error;
@@ -165,6 +188,7 @@ exports.updatePost = (req, res, next) => {
       return post.save();
     })
     .then(result => {
+      io.getIO().emit("posts", { action: "update", post: result });
       res.status(200).json({ message: "Post updated", post: result });
     })
     .catch(errors => next(errors));

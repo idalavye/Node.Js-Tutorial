@@ -3,6 +3,7 @@ const path = require("path");
 
 const { validationResult } = require("express-validator/check");
 
+const io = require("../socket");
 const Post = require("../models/post");
 const User = require("../models/user");
 /**
@@ -82,6 +83,11 @@ exports.postPost = (req, res, next) => {
       return user.save();
     })
     .then(result => {
+      /**
+       * Emit tüm bağli kullanıcılara bir mesaj gönderecektir.
+       * broadcast kendisi hariç tüm kullanıcılara gönderir.
+       */
+      io.getIO().emit("posts", { action: "create", post: post });
       //Create post in db
       res.status(201).json({
         message: "Post created successfuly",

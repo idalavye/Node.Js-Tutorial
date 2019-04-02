@@ -6,11 +6,10 @@ const User = require("../models/user");
 const AuthController = require("../controllers/auth");
 
 describe("Auth Controller", function() {
-
-/**
- * before ve after tüm testlerden önce ve sonra sadece bir kez çalışır.
- * Her testden önce çalışmasını istiyorsak beforeEach, afterEach hooklarını kullanabiliriz.
- */
+  /**
+   * before ve after tüm testlerden önce ve sonra sadece bir kez çalışır.
+   * Her testden önce çalışmasını istiyorsak beforeEach, afterEach hooklarını kullanabiliriz.
+   */
 
   before(function(done) {
     mongoose
@@ -75,6 +74,7 @@ describe("Auth Controller", function() {
     AuthController.getUserStatus(req, res, () => {}).then(() => {
       expect(res.statusCode).to.be.equal(200);
       expect(res.userStatus).to.be.equal("I am new!");
+      done();
       /**
        * Eğer done bu şekilde kullanırsak test hiçbir zaman bitmez. Çünkü mongodb bağlantısının bitmesini bekler.
        */

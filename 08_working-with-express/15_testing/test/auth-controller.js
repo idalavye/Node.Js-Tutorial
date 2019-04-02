@@ -53,7 +53,7 @@ describe("Auth Controller - Login", function() {
         const res = {
           statusCode: 500,
           userStatus: null,
-          status: function() {
+          status: function(code) {
             this.statusCode = code;
             return this;
           },
@@ -64,7 +64,21 @@ describe("Auth Controller - Login", function() {
         AuthController.getUserStatus(req, res, () => {}).then(() => {
           expect(res.statusCode).to.be.equal(200);
           expect(res.userStatus).to.be.equal("I am new!");
-          done();
+          /**
+           * Eğer done bu şekilde kullanırsak test hiçbir zaman bitmez. Çünkü mongodb bağlantısının bitmesini bekler.
+           */
+          //   done();
+
+          /**
+           * Dummy data ekledikten sonra sonraki testlerde sorun çıkmaması için eklediğimiz şeyleri silmeliyiz.
+           */
+          User.deleteMany({})
+            .then(() => {
+              return mongoose.disconnect();
+            })
+            .then(() => {
+              done();
+            });
         });
       })
       .catch(err => console.log(err));

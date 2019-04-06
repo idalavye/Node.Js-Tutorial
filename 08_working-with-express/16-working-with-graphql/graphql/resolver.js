@@ -23,11 +23,22 @@ module.exports = {
      * _docs sadece user'ı döndürür, mongoose un sağladığı metotlar veya başka şeyler olmadan
      */
     return {
-      ...createdUser._docs,
+      ...createdUser._doc,
       _id: createdUser._id.toString()
     };
   }
 };
+
+/**
+ 
+mutation {
+  createUser(userInput: {email:"test@test6.com",name:"asdf",password:"asdf"}) {
+    _id,
+    email
+  }
+}
+
+ */
 
 // module.exports = {
 //   hello() {

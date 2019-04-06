@@ -27,3 +27,8 @@ Endpoints:
 
 CSRF:
 CORS: Cross Origin Resource Sharing
+
+GraphQL: Veritabanından veri çekmek için kullandığımız sorgulara benzer şekilde front-end'in istedği bilgileri backend den istemesi 
+    olarak düşünebiliriz. Örneğin bir tane post çekmek istediğimizi düşünelim. get/post ile tüm postları çekeriz. ama sadece id'sini 
+    ve title ını çekmek istersek, bunun için ya ayrı bir endpoint ya da query parameter kullabiliriz. Ama bu rest api mizde zmanla 
+    karmaşıklığa neden olacaktır. Bunun yerine GraphQL kullanabiliriz.

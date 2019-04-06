@@ -1,22 +1,63 @@
 const { buildSchema } = require("graphql");
 
-/**
- * String! ünlem işareti String olmasını zorunlu kılıyor. Öteki durumda hata verecek.
- */
 module.exports = buildSchema(`
-    type TestData {
-        text: String!
-        views: Int!
+    type Post {
+        _id: ID!
+        title: String!
+        content: String!
+        imageUrl: String!
+        creator: User!
+        createdAt: String!
+        updatedAt: String!
     }
 
-    type RootQuery { 
-        hello: TestData
+    type User {
+        _id: ID!
+        name: String!
+        email: String!
+        password: String
+        status: String
+        posts: [Post!]! 
+    }
+
+    input UserInputData {
+        email: String!
+        name: String!
+        password: String!
+    }
+
+    type RootMutation { 
+        createUser(userInput: UserInputData): User!
     }
 
     schema {
-        query: RootQuery
+        mutation: RootMutation
     }
 `);
+
+
+
+
+
+
+
+/**
+ * String! ünlem işareti String olmasını zorunlu kılıyor. Öteki durumda hata verecek.
+ */
+// module.exports = buildSchema(`
+//     type TestData {
+//         text: String!
+//         views: Int!
+//     }
+
+//     type RootQuery { 
+//         hello: TestData
+//     }
+
+//     schema {
+//         query: RootQuery
+//     }
+// `);
 
 /**
  * clientden localhost:8080/graphql adresine istek attığımız zaman graphql tetiklenecek.
